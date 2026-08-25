@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flip Zone  Anti-Gravity Platformer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ======================= GAME WRAPPER ======================= -->
+  <div id="gameWrapper">
+
+    <!-- Canvas the whole game renders to -->
+    <canvas id="gameCanvas" width="960" height="540"></canvas>
+
+    <!-- ------------------- HEADS-UP DISPLAY ------------------- -->
+    <div id="hud">
+      <div class="hud-left">
+        <span id="hudLevel">Level 1</span>
+      </div>
+      <div class="hud-center">
+        <span id="hudCoins"> 0</span>
+      </div>
+      <div class="hud-right">
+        <button id="muteBtn" class="icon-btn" title="Mute/Unmute (M)"></button>
+        <button id="pauseBtn" class="icon-btn" title="Pause (Esc)"></button>
+      </div>
+    </div>
+
+    <!-- ------------------- MAIN MENU ------------------- -->
+    <div id="mainMenu" class="overlay">
+      <div class="panel panel-title">
+        <h1 class="game-title">FLIP <span class="accent">ZONE</span></h1>
+        <p class="subtitle">an anti-gravity platformer</p>
+
+        <div class="menu-buttons">
+          <button class="btn btn-primary" id="playBtn"> Play</button>
+          <button class="btn" id="levelSelectBtn"> Level Select</button>
+          <button class="btn" id="controlsBtn"> Controls</button>
+          <button class="btn" id="settingsBtn"> Settings</button>
+        </div>
+        <p class="hint">Best experienced with sound on </p>
+      </div>
+    </div>
+
+    <!-- ------------------- LEVEL SELECT ------------------- -->
+    <div id="levelSelectMenu" class="overlay hidden">
+      <div class="panel">
+        <h2>Select Level</h2>
+        <div id="levelGrid" class="level-grid"></div>
+        <button class="btn" data-back="mainMenu"> Back</button>
+      </div>
+    </div>
+
+    <!-- ------------------- PAUSE MENU ------------------- -->
+    <div id="pauseMenu" class="overlay hidden">
+      <div class="panel">
+        <h2>Paused</h2>
+        <div class="menu-buttons">
+          <button class="btn btn-primary" id="resumeBtn"> Resume</button>
+          <button class="btn" id="restartBtn"> Restart Level</button>
+          <button class="btn" id="pauseSettingsBtn"> Settings</button>
+          <button class="btn" id="pauseControlsBtn"> Controls</button>
+          <button class="btn" id="quitBtn"> Main Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------- SETTINGS MENU ------------------- -->
+    <div id="settingsMenu" class="overlay hidden">
+      <div class="panel">
+        <h2>Settings</h2>
+
+        <div class="setting-row">
+          <label for="musicSlider">Music Volume</label>
+          <input type="range" id="musicSlider" min="0" max="100" value="60">
+        </div>
+
+        <div class="setting-row">
+          <label for="sfxSlider">SFX Volume</label>
+          <input type="range" id="sfxSlider" min="0" max="100" value="80">
+        </div>
+
+        <div class="setting-row">
+          <label for="particlesToggle">Particle Effects</label>
+          <input type="checkbox" id="particlesToggle" checked>
+        </div>
+
+        <div class="setting-row">
+          <label for="screenShakeToggle">Screen Shake</label>
+          <input type="checkbox" id="screenShakeToggle" checked>
+        </div>
+
+        <div class="setting-row">
+          <label for="qualitySelect">Graphics Quality</label>
+          <select id="qualitySelect">
+            <option value="low">Low</option>
+            <option value="high" selected>High</option>
+          </select>
+        </div>
+
+        <div class="menu-buttons">
+          <button class="btn btn-primary" id="settingsBackBtn"> Done</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------- CONTROLS / HELP ------------------- -->
+    <div id="controlsMenu" class="overlay hidden">
+      <div class="panel">
+        <h2>Controls</h2>
+        <ul class="controls-list">
+          <li><span class="key">A / D</span> or <span class="key"> / </span> Move</li>
+          <li><span class="key">W</span> / <span class="key"></span> / <span class="key">Space</span> Jump</li>
+          <li><span class="key">Shift</span> or <span class="key">F</span> Flip Gravity</li>
+          <li><span class="key">Esc</span> Pause</li>
+          <li><span class="key">M</span> Mute</li>
+        </ul>
+        <p class="hint">Flip gravity to walk on ceilings, dodge spikes, and reach platforms above you. Time your flips — you keep your momentum!</p>
+        <button class="btn btn-primary" id="controlsBackBtn"> Got it</button>
+      </div>
+    </div>
+
+    <!-- ------------------- LEVEL COMPLETE ------------------- -->
+    <div id="levelCompleteOverlay" class="overlay hidden">
+      <div class="panel">
+        <h2 class="accent">Level Complete!</h2>
+        <p id="levelStats"></p>
+        <div class="menu-buttons">
+          <button class="btn btn-primary" id="nextLevelBtn">Next Level </button>
+          <button class="btn" id="replayLevelBtn"> Replay</button>
+          <button class="btn" id="levelCompleteMenuBtn"> Main Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------- VICTORY SCREEN ------------------- -->
+    <div id="victoryOverlay" class="overlay hidden">
+      <div class="panel">
+        <h2 class="accent"> You beat Flip Zone!</h2>
+        <p id="victoryStats"></p>
+        <div class="menu-buttons">
+          <button class="btn btn-primary" id="victoryMenuBtn"> Main Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Small on-screen prompt e.g. "Checkpoint reached" -->
+    <div id="toast" class="toast hidden"></div>
+
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>

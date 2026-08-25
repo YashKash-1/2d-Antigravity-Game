@@ -1,0 +1,268 @@
+/* ==========================================================================
+   FLIP ZONE — Anti-Gravity Platformer
+   Design: cartoon "gravity storm" palette — deep indigo void, hot magenta
+   and electric cyan accents (the two "gravity poles" of the game).
+   ========================================================================== */
+
+:root {
+  --void-950: #0b0b1e;
+  --void-900: #131333;
+  --void-800: #1d1d4b;
+  --panel-bg: rgba(19, 19, 51, 0.92);
+  --cyan: #4deeea;
+  --magenta: #f92aad;
+  --yellow: #ffe45e;
+  --text-light: #eef0ff;
+  --text-dim: #9a9ac0;
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  font-size: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 20%, var(--void-800), var(--void-950) 70%);
+  font-family: 'Segoe UI', 'Trebuchet MS', 'Verdana', sans-serif;
+  color: var(--text-light);
+  -webkit-font-smoothing: antialiased;
+}
+
+#gameWrapper {
+  position: relative;
+  width: 960px;
+  max-width: 100vw;
+  aspect-ratio: 960 / 540;
+  margin: 0 auto;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 0 0 3px rgba(77, 238, 234, 0.25), 0 20px 60px rgba(0,0,0,0.6);
+}
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #10102a;
+  image-rendering: optimizeSpeed;
+}
+
+/* ==========================================================================
+   HUD
+   ========================================================================== */
+
+#hud {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  pointer-events: none;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  z-index: 5;
+}
+
+#hud > div { display: flex; align-items: center; gap: 8px; }
+#hud span { font-size: 1.05rem; }
+
+.hud-right { pointer-events: all; }
+
+.icon-btn {
+  pointer-events: all;
+  background: rgba(0,0,0,0.35);
+  border: 2px solid rgba(255,255,255,0.15);
+  color: var(--text-light);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.icon-btn:hover {
+  transform: scale(1.1);
+  border-color: var(--cyan);
+}
+.icon-btn:active { transform: scale(0.92); }
+
+/* ==========================================================================
+   OVERLAYS / MENUS
+   ========================================================================== */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 8, 22, 0.72);
+  backdrop-filter: blur(3px);
+  z-index: 10;
+  animation: fadeIn 0.18s ease;
+}
+
+.overlay.hidden { display: none; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 2px solid rgba(77, 238, 234, 0.35);
+  border-radius: var(--radius-lg);
+  padding: 28px 36px;
+  min-width: 340px;
+  max-width: 86%;
+  max-height: 86%;
+  overflow-y: auto;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(249, 42, 173, 0.15), inset 0 0 30px rgba(77,238,234,0.04);
+  animation: popIn 0.22s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.85) translateY(10px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.panel h1, .panel h2 { margin: 0 0 6px; }
+
+.game-title {
+  font-size: 3rem;
+  letter-spacing: 3px;
+  color: var(--text-light);
+  text-shadow: 0 0 18px rgba(77,238,234,0.6);
+}
+.accent { color: var(--magenta); text-shadow: 0 0 16px rgba(249,42,173,0.7); }
+
+.subtitle { color: var(--text-dim); margin-bottom: 22px; font-style: italic; }
+.hint { color: var(--text-dim); font-size: 0.85rem; margin-top: 16px; }
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0 6px;
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-light);
+  background: linear-gradient(180deg, #2a2a5e, #1a1a42);
+  border: 2px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-md);
+  padding: 12px 22px;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--cyan);
+  box-shadow: 0 6px 18px rgba(77,238,234,0.25);
+}
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--magenta), #c21c86);
+  border-color: rgba(255,255,255,0.25);
+}
+.btn-primary:hover { box-shadow: 0 6px 20px rgba(249,42,173,0.45); }
+
+/* Level select grid */
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 18px 0;
+}
+.level-tile {
+  padding: 18px 8px;
+  border-radius: var(--radius-md);
+  border: 2px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.15s ease;
+}
+.level-tile:hover:not(.locked) { border-color: var(--cyan); transform: translateY(-2px); }
+.level-tile.locked { opacity: 0.35; cursor: not-allowed; }
+.level-tile .stars { display: block; font-size: 0.8rem; margin-top: 4px; color: var(--yellow); }
+
+/* Settings rows */
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  text-align: left;
+}
+.setting-row label { font-weight: 600; color: var(--text-light); }
+.setting-row input[type="range"] { width: 150px; accent-color: var(--cyan); }
+.setting-row input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--magenta); }
+.setting-row select {
+  background: var(--void-900);
+  color: var(--text-light);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family: inherit;
+}
+
+/* Controls list */
+.controls-list { list-style: none; padding: 0; margin: 14px 0; text-align: left; }
+.controls-list li { padding: 8px 4px; display: flex; align-items: center; gap: 8px; }
+.key {
+  display: inline-block;
+  background: var(--void-900);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 6px;
+  padding: 3px 9px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: var(--cyan);
+  min-width: 26px;
+  text-align: center;
+}
+
+/* Toast (checkpoint / coin pop-ups) */
+.toast {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.55);
+  border: 1px solid var(--cyan);
+  border-radius: 10px;
+  padding: 8px 18px;
+  font-weight: 700;
+  z-index: 6;
+  animation: toastPop 1.6s ease forwards;
+  pointer-events: none;
+}
+.toast.hidden { display: none; }
+@keyframes toastPop {
+  0%   { opacity: 0; transform: translate(-50%, -8px); }
+  12%  { opacity: 1; transform: translate(-50%, 0); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -6px); }
+}
+
+/* Responsive scaling for smaller viewports */
+@media (max-width: 720px) {
+  .game-title { font-size: 2.1rem; }
+  .panel { padding: 20px; min-width: unset; }
+}
